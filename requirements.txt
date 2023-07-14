@@ -1,0 +1,7 @@
+django
+psycopg2-binary	
+django-widget-tweaks
+python-decouple
+django-qurl-templatetag
+Pillow
+django-mptt

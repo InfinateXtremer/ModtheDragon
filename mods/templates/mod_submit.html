@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container my-4" style="max-width: 960px;">
+	<form method="post" enctype="multipart/form-data" novalidate>
+		{% csrf_token %}
+
+		{% if form.non_field_errors %}
+			<div class="alert alert-danger" role="alert">
+			{% for error in form.non_field_errors %}
+				{{ error }}
+			{% endfor %}
+			</div>
+		{% endif %}
+
+		
+		<div class="row">
+			<div class="col-md-6 mb-3">
+				<label for="title" class="form-label">Title</label>
+				{% include 'form_field.html' with form=form field=form.title %}
+			</div>
+			<div class="col-md-6 mb-3">
+				<label for="game" class="form-label">Game</label>
+				{% include 'form_field.html' with form=form field=form.game %}
+			</div>
+			<div class="col-md-2 mb-3">
+				<label for="version" class="form-label">Version</label>
+				{% include 'form_field.html' with form=form field=form.version %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 mb-3">
+				<label for="file" class="form-label">File (.pak, .zip)</label>
+				{% include 'form_field.html' with form=form field=form.file %}
+			</div>
+			<div class="col-md-6 mb-3">
+				<label for="thumbnail" class="form-label">Thumbnail</label>
+				{% include 'form_field.html' with form=form field=form.thumbnail %}
+			</div>
+		</div>
+		<div class="mb-3">
+			<label for="tags" class="form-label">Tags</label>
+			<div class="{% if form.tags.errors %}is-invalid{% endif %}" style="max-height:100px;">
+				<div class="ms-2">
+					{{form.media}}
+					{{form.tags}} 
+					{% comment %} {% for value, label in form.tags.field.choices %}
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="{{ value }}" name="tags">
+						<label class="form-check-label">{{ label }}</label>
+					</div>
+					{% endfor %} {% endcomment %}
+				</div>
+			</div>
+			{% for error in form.tags.errors %}
+			<div class="invalid-feedback">
+				{{ error }}
+			</div>
+			{% endfor %}
+		</div>
+		<div class="mb-3">
+			<label for="tags" class="form-label">Short Description (128 char.)</label>
+			{% include 'form_field.html' with form=form field=form.description %}
+		</div>
+		<div class="mb-3">
+			<label for="tags" class="form-label">Hidden</label>
+			{% include 'form_field.html' with form=form field=form.hidden %}
+		</div>
+		<div class="mb-3">
+			<label for="dependencies" class="form-label">Dependencies</label>
+			<div class="overflow-auto" style="max-height:100px;">
+				<div class="ms-2">
+					{% for value, label in form.dependencies.field.choices %}
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="{{ value }}" name="dependencies">
+						<label class="form-check-label">{{ label }}</label>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>
+{% endblock %}

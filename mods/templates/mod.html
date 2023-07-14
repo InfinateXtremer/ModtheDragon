@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block body %}
+<div class="container my-4">
+	<div class="card mb-4" style="overflow: hidden;">
+		{% if mod.author == user.author or user.is_admin or user.is_superuser %}
+		<div class="card-header d-md-flex justify-content-md-end">
+			<div class="btn-group">
+				<a class="btn btn-outline-secondary" href="{% url 'submit_mod' mod.game.slug mod.id %}">Edit</a>
+				<button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModModal">Delete</button>
+			</div>
+		</div>
+		{% endif %}
+
+		<div class="row gx-0">
+			<div class="col-lg-4">
+				<div style="width: 100%; height: 200px; background: url('{{ mod.thumbnail.url }}') center; background-size: cover;"></div>
+			</div>
+			<div class="col-lg-8">
+				<div class="card-body">
+					<h1 class="card-title text-truncate">{{ mod.title }}</h1>
+					<p><small class="text-muted">Uploaded by {{ mod.author }}</small></p>
+					<p>{{ mod.description }}</p>
+					<a class="btn btn-success" href="{{ mod.file.url }}">Download</a>
+				</div>
+			</div>
+			<div class="card-footer d-flex justify-content-between">
+				<small class="text-muted">{{ mod.file.size|filesizeformat }}</small>
+				<small class="text-muted">Updated {{ mod.date_updated|naturaltime }}</small>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteModModal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="deleteModModalLabel">Delete {{ mod.title }}</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				You are about to delete a mod. Are you sure?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				{% comment %}<a type="button" class="btn btn-danger" href="{% url 'delete_mod' mod.id_num %}">Delete</a>{% endcomment %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock body %}
